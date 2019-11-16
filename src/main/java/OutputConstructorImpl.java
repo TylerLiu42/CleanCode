@@ -2,11 +2,11 @@ class OutputConstructorImpl implements OutputConstructor {
 
     @Override
     public String constructOutput(QuadraticRoots roots) {
-        if (roots.firstRoot == roots.secondRoot) {
-            return String.valueOf(roots.firstRoot);
+        if (roots.getFirstRoot() == roots.getSecondRoot()) {
+            return String.valueOf(roots.getFirstRoot());
         }
         else {
-            return roots.firstRoot + "," + roots.secondRoot;
+            return roots.getFirstRoot() + "," + roots.getSecondRoot();
         }
     }
 }

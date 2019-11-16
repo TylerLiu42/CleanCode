@@ -1,5 +1,8 @@
 public class ExceptionMessageUtils {
 
+    private ExceptionMessageUtils() {
+    }
+
     public static final String NO_COMMA_SEPARATION = "Invalid input: coefficients must be comma separated";
     public static final String LEADING_COEFFICIENT_ZERO = "Invalid input: leading coefficient cannot be zero";
     public static final String INVALID_NUM_OF_COEFFICIENTS = "Invalid input: too many/too few coefficients";

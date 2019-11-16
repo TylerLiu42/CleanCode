@@ -67,9 +67,4 @@ class QuadraticSolverImplTest {
         when(inputValidator.isValid(inputWithWhitespace)).thenThrow(new InvalidInputException.WhitespaceException(HAS_WHITESPACE))
         assertThat(quadraticSolver.solve(inputWithWhitespace)).isEqualTo(HAS_WHITESPACE)
     }
-    @Test
-    void 'error returned when input fails validation due to some unidentifiable syntactic problem'() {
-        String garbage = '10,,20,,,30'
-
-    }
 }

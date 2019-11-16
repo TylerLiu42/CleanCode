@@ -37,6 +37,10 @@ class QuadraticSolverImplTest {
     }
     @Test
     void 'error returned when no roots exception thrown by calc engine'() {
-
+        when(inputParser.getCoefficients(anyString())).thenReturn(new QuadraticCoefficients(1,1,10))
+        when(calculationEngine.findRoots(isA(QuadraticCoefficients))).thenThrow(new NoRootsException("no real roots"))
+        String input = "1,1,10"
+        String expectedOutput = 'no real roots'
+        assertThat(quadraticSolver.solve(input)).isEqualTo(expectedOutput)
     }
 }

@@ -10,7 +10,7 @@ class InputParserImpl implements InputParser {
     }
 
     private boolean isValid(String str) {
-        String matcherRegex = "-?\\d+(.\\d+)?,-?\\d+(.\\d+)?,-?\\d+(.\\d+)?";
+        String matcherRegex = "-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?";
         return str.matches(matcherRegex);
     }
 

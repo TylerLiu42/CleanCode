@@ -1,56 +1,54 @@
-import java.math.BigDecimal;
-
 public class InputValidatorImpl implements InputValidator {
 
     private boolean isCommaSeparated(String input) {
-        String regex = ".+,.+,.+";
+        String regex = ".+(,.+)+";
         return input.matches(regex);
     }
 
-    protected boolean isLeadingCoefficientZero(String input) {
-        BigDecimal firstCoefficient = new BigDecimal(input.trim().substring(0, input.indexOf(',')));
-        BigDecimal zero = new BigDecimal(0);
-        return firstCoefficient.compareTo(zero) == 0;
+    private boolean isLeadingCoefficientZero(String input) {
+        String firstCoefficientStr = input.substring(0, input.indexOf(','));
+        String regex = "0(.0+)?";
+        return firstCoefficientStr.matches(regex);
     }
 
-    protected boolean isProperLength(String input) {
-        String[] coefficients = input.split(",");
+    private boolean isProperLength(String input) {
+        String[] coefficients = input.split(",+");
         return coefficients.length == 3;
     }
 
-    protected boolean isNumericCoefficients(String input) {
-        String[] coefficients = input.split(",");
+    private boolean isNumericCoefficients(String input) {
+        String[] coefficients = input.split(",+");
         for (String coefficient : coefficients) {
-            if (!isNumeric(coefficient)) {
+            if (!isNumeric(coefficient.trim())) {
                 return false;
             }
         }
         return true;
     }
 
-    protected boolean isWhitespacePresent(String input) {
+    private boolean isWhitespacePresent(String input) {
         return input.chars().mapToObj(c -> (char) c).anyMatch(c -> c.equals(' '));
     }
     @Override
     public boolean isValid(String input) throws InvalidInputException {
         String matcherRegex = "-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?";
         if (!isCommaSeparated(input)) {
-            throw new InvalidInputException.NoCommaSeparationException("Invalid input: coefficients must be comma separated");
+            throw new InvalidInputException.NoCommaSeparationException(ExceptionMessageUtils.NO_COMMA_SEPARATION);
         }
         else if (isLeadingCoefficientZero(input)) {
-            throw new InvalidInputException.LeadingCoefficientZeroException("Invalid input: leading coefficient cannot be zero");
+            throw new InvalidInputException.LeadingCoefficientZeroException(ExceptionMessageUtils.LEADING_COEFFICIENT_ZERO);
         }
         else if (!isProperLength(input)) {
-            throw new InvalidInputException.InvalidNumberOfCoefficientsException("Invalid input: too many/too few coefficients");
+            throw new InvalidInputException.InvalidNumberOfCoefficientsException(ExceptionMessageUtils.INVALID_NUM_OF_COEFFICIENTS);
         }
         else if (!isNumericCoefficients(input)) {
-            throw new InvalidInputException.NonRealCoefficientsException("Invalid input: coefficients must be numeric");
+            throw new InvalidInputException.NonNumericCoefficientsException(ExceptionMessageUtils.NON_NUMERIC_COEFFICIENTS);
         }
         else if (isWhitespacePresent(input)) {
-            throw new InvalidInputException.WhitespaceException("Invalid input: no whitespace allowed");
+            throw new InvalidInputException.WhitespaceException(ExceptionMessageUtils.HAS_WHITESPACE);
         }
         else if (!input.matches(matcherRegex)) {
-            throw new InvalidInputException("Invalid input: Unknown reason");
+            throw new InvalidInputException(ExceptionMessageUtils.UNKNOWN_VALIDATION_ERROR);
         }
         return true;
     }

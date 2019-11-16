@@ -1,17 +1,9 @@
 class InputParserImpl implements InputParser {
     @Override
-    public QuadraticCoefficients getCoefficients(String inputCoefficients) throws InvalidInputException {
-        if (!isValid(inputCoefficients)) {
-            throw new InvalidInputException("input is invalid");
-        }
+    public QuadraticCoefficients getCoefficients(String inputCoefficients) {
         String regex = ",";
         String[] arrOfCoefficients = inputCoefficients.split(regex, 0);
         return constructQuadraticCoefficients(arrOfCoefficients);
-    }
-
-    private boolean isValid(String str) {
-        String matcherRegex = "-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?";
-        return str.matches(matcherRegex);
     }
 
     private QuadraticCoefficients constructQuadraticCoefficients(String[] arrayOfCoefficients) {

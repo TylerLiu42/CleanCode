@@ -26,23 +26,40 @@ class InputValidatorImplTest {
     void 'input should have strictly 3 coefficients'() {
         String inputTooManyCoefficients = '10,20,30,40,50'
         String inputTooFewCoefficients = '10,20'
-        assertThat(inputValidator.isProperLength(inputTooManyCoefficients)).isFalse()
-        assertThat(inputValidator.isProperLength(inputTooFewCoefficients)).isFalse()
+        assertThatExceptionOfType(InvalidInputException.InvalidNumberOfCoefficientsException).isThrownBy({ ->
+            inputValidator.isValid(inputTooManyCoefficients)
+        })
+        assertThatExceptionOfType(InvalidInputException.InvalidNumberOfCoefficientsException).isThrownBy({ ->
+            inputValidator.isValid(inputTooFewCoefficients)
+        })
     }
     @Test
     void 'coefficients must be real numbers'() {
         String inputWithLetterCoefficients = 'A,B,C'
         String inputWithGarbageCoefficients = '%3$*,()^,89*'
         String inputWithNumericCoefficients = '10.2,20,-30.3'
-        assertThat(inputValidator.isNumericCoefficients(inputWithLetterCoefficients)).isFalse()
-        assertThat(inputValidator.isNumericCoefficients(inputWithGarbageCoefficients)).isFalse()
-        assertThat(inputValidator.isNumericCoefficients(inputWithNumericCoefficients)).isTrue()
+        assertThatExceptionOfType(InvalidInputException.NonNumericCoefficientsException).isThrownBy({ ->
+            inputValidator.isValid(inputWithLetterCoefficients)
+        })
+        assertThatExceptionOfType(InvalidInputException.NonNumericCoefficientsException).isThrownBy({ ->
+            inputValidator.isValid(inputWithGarbageCoefficients)
+        })
+        assertThat(inputValidator.isValid(inputWithNumericCoefficients)).isTrue()
     }
     @Test
     void 'input should not have whitespace'() {
         String inputWithWhitespace = '10, 20, 30'
         String inputWithoutWhitespace = '10,20,30'
-        assertThat(inputValidator.isWhitespacePresent(inputWithWhitespace)).isTrue()
-        assertThat(inputValidator.isWhitespacePresent(inputWithoutWhitespace)).isFalse()
+        assertThatExceptionOfType(InvalidInputException.WhitespaceException).isThrownBy({ ->
+            inputValidator.isValid(inputWithWhitespace)
+        })
+        assertThat(inputValidator.isValid(inputWithoutWhitespace)).isTrue()
+    }
+    @Test
+    void 'input has some unidentifiable syntactic problem, throw generic exception'() {
+        String garbageInput = '-20,,30,,,40'
+        assertThatExceptionOfType(InvalidInputException).isThrownBy({ ->
+            inputValidator.isValid(garbageInput)
+        })
     }
 }

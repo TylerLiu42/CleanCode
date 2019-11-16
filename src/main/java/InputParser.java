@@ -1,3 +1,3 @@
 public interface InputParser {
-    public QuadraticCoefficients getCoefficients(String inputCoefficients) throws InvalidInputException;
+    QuadraticCoefficients getCoefficients(String inputCoefficients);
 }

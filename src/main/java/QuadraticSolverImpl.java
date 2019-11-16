@@ -1,24 +1,28 @@
 public class QuadraticSolverImpl implements QuadraticSolver {
 
+    private InputValidator inputValidator;
     private InputParser inputParser;
     private CalculationEngine calculationEngine;
     private OutputConstructor outputConstructor;
 
-    public QuadraticSolverImpl(InputParser inputParser, CalculationEngine calculationEngine, OutputConstructor outputConstructor) {
+    public QuadraticSolverImpl(InputValidator inputValidator, InputParser inputParser, CalculationEngine calculationEngine,
+                               OutputConstructor outputConstructor) {
         this.inputParser = inputParser;
         this.calculationEngine = calculationEngine;
         this.outputConstructor = outputConstructor;
+        this.inputValidator = inputValidator;
     }
 
     @Override
     public String solve(String inputQuadratic) {
-        QuadraticCoefficients coefficients;
         try {
-            coefficients = inputParser.getCoefficients(inputQuadratic);
+            inputValidator.isValid(inputQuadratic);
         }
-        catch (InvalidInputException e) {
-            return "java.lang.InvalidInputException";
+        catch(InvalidInputException e) {
+            return e.getMessage();
         }
+        QuadraticCoefficients coefficients;
+        coefficients = inputParser.getCoefficients(inputQuadratic);
         QuadraticRoots roots;
         try {
             roots = calculationEngine.findRoots(coefficients);

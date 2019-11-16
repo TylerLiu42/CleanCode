@@ -16,8 +16,8 @@ public class InvalidInputException extends Exception {
         InvalidNumberOfCoefficientsException(String message) { super(message); }
     }
 
-    public static class NonRealCoefficientsException extends InvalidInputException {
-        NonRealCoefficientsException(String message) { super(message); }
+    public static class NonNumericCoefficientsException extends InvalidInputException {
+        NonNumericCoefficientsException(String message) { super(message); }
     }
 
     public static class WhitespaceException extends InvalidInputException {

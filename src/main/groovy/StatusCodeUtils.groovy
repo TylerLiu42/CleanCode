@@ -1,5 +1,3 @@
-package utils
-
 import groovy.transform.TupleConstructor
 
 class StatusCodeUtils {

@@ -12,7 +12,7 @@ class CalculationEngineImpl implements CalculationEngine {
             return new QuadraticRoots(firstRoot, secondRoot);
         }
         else {
-            throw new NoRootsException(ExceptionMessageUtils.NO_REAL_ROOTS);
+            throw new NoRootsException(StatusCodes.NO_ROOTS_EXCEPTION.toString());
         }
     }
     private double getDiscriminant(double a, double b, double c) {

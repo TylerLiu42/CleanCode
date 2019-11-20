@@ -4,10 +4,6 @@ public class InvalidInputException extends Exception {
         super(message);
     }
 
-    public static class NoCommaSeparationException extends InvalidInputException {
-        NoCommaSeparationException(String message) { super(message); }
-    }
-
     public static class LeadingCoefficientZeroException extends InvalidInputException {
         LeadingCoefficientZeroException(String message) { super(message); }
     }
@@ -20,7 +16,4 @@ public class InvalidInputException extends Exception {
         NonNumericCoefficientsException(String message) { super(message); }
     }
 
-    public static class WhitespaceException extends InvalidInputException {
-        WhitespaceException(String message) { super(message); }
-    }
 }

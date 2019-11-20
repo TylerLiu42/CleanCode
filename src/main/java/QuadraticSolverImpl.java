@@ -15,21 +15,21 @@ public class QuadraticSolverImpl implements QuadraticSolver {
 
     @Override
     public String solve(String inputQuadratic) {
+        QuadraticRoots roots;
         try {
             inputValidator.isValid(inputQuadratic);
         }
         catch(InvalidInputException e) {
-            return e.getMessage();
+            return outputConstructor.constructOutput(null, StatusCodes.valueOf(e.getMessage()));
         }
         QuadraticCoefficients coefficients;
         coefficients = inputParser.getCoefficients(inputQuadratic);
-        QuadraticRoots roots;
         try {
             roots = calculationEngine.findRoots(coefficients);
         }
         catch (NoRootsException e) {
-            return e.getMessage();
+            return outputConstructor.constructOutput(null, StatusCodes.valueOf(e.getMessage()));
         }
-        return outputConstructor.constructOutput(roots);
+        return outputConstructor.constructOutput(roots, StatusCodes.SUCCESS);
     }
 }

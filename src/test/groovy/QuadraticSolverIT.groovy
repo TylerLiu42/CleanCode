@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Test
 
-import static StatusCodeUtils.*
+import static StatusCodes.*
 
 import static org.assertj.core.api.Assertions.*
 
@@ -21,25 +21,25 @@ class QuadraticSolverIT {
     @Test
     void 'should output correct error code and message when input has improper length'() {
         String input = '2.5, 5.5,'
-        String expected = "null,null,${INVALID_NUMBER_OF_COEFFICIENTS.code},${INVALID_NUMBER_OF_COEFFICIENTS.message}"
+        String expected = "null,null,${INVALID_NUMBER_OF_COEFFICIENTS_EXCEPTION.statusCode},${INVALID_NUMBER_OF_COEFFICIENTS_EXCEPTION.errorMessage}"
         assertThat(quadraticSolver.solve(input)).isEqualTo(expected)
     }
     @Test
     void 'should output correct error code and message when input has non-numeric coefficients'() {
         String input = '2.5, A, %$232'
-        String expected = "null,null,${NON_NUMERIC_COEFFICIENTS.code},${NON_NUMERIC_COEFFICIENTS.message}"
+        String expected = "null,null,${NON_NUMERIC_COEFFICIENTS_EXCEPTION.statusCode},${NON_NUMERIC_COEFFICIENTS_EXCEPTION.errorMessage}"
         assertThat(quadraticSolver.solve(input)).isEqualTo(expected)
     }
     @Test
     void 'should output correct error code and message when input has leading coefficient zero'() {
         String input = '0.00, -5.2, -100'
-        String expected = "null,null,${LEADING_COEFFICIENT_ZERO.code},${LEADING_COEFFICIENT_ZERO.message}"
+        String expected = "null,null,${LEADING_COEFFICIENT_ZERO_EXCEPTION.statusCode},${LEADING_COEFFICIENT_ZERO_EXCEPTION.errorMessage}"
         assertThat(quadraticSolver.solve(input)).isEqualTo(expected)
     }
     @Test
     void 'should output correct error code and message when input has no real roots'() {
         String input = '1,1,10'
-        String expected = "null,null,${NO_ROOTS.code},${NO_ROOTS.message}"
+        String expected = "null,null,${NO_ROOTS_EXCEPTION.statusCode},${NO_ROOTS_EXCEPTION.errorMessage}"
         assertThat(quadraticSolver.solve(input)).isEqualTo(expected)
     }
 }

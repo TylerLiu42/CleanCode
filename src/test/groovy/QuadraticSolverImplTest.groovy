@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test
 
 import static org.mockito.ArgumentMatchers.isNull
+import static StatusCodes.*
 
 import static org.assertj.core.api.Assertions.*
 import static org.mockito.ArgumentMatchers.anyString
@@ -34,16 +35,18 @@ class QuadraticSolverImplTest {
     @Test
     void 'error message returned when input fails validation'() {
         String input = 'bob,fred,dave'
-        when(inputValidator.isValid(input)).thenThrow(new InvalidInputException.NonNumericCoefficientsException('NON_NUMERIC_COEFFICIENTS_EXCEPTION'))
-        when(outputConstructor.constructOutput(isNull(), isA(StatusCodes))).thenReturn('null,null,3,Invalid input: coefficients must be numeric')
+        String resultFromOutputConstructor = "null,null,$NON_NUMERIC_COEFFICIENTS_EXCEPTION.statusCode,$NON_NUMERIC_COEFFICIENTS_EXCEPTION.errorMessage"
+        when(inputValidator.isValid(input)).thenThrow(new InvalidInputException.NonNumericCoefficientsException(NON_NUMERIC_COEFFICIENTS_EXCEPTION.toString()))
+        when(outputConstructor.constructOutput(isNull(), isA(StatusCodes))).thenReturn(resultFromOutputConstructor)
         assertThat(quadraticSolver.solve(input)).isEqualTo('null,null,3,Invalid input: coefficients must be numeric')
     }
     @Test
     void 'error message included in output when no roots exception thrown by calc engine'() {
         when(inputParser.getCoefficients(anyString())).thenReturn(new QuadraticCoefficients(1,1,10))
-        when(calculationEngine.findRoots(isA(QuadraticCoefficients))).thenThrow(new NoRootsException('NO_ROOTS_EXCEPTION'))
-        when(outputConstructor.constructOutput(isNull(), isA(StatusCodes))).thenReturn('null,null,4,Calculation failed, quadratic has no real roots')
+        when(calculationEngine.findRoots(isA(QuadraticCoefficients))).thenThrow(new NoRootsException(NO_ROOTS_EXCEPTION.toString()))
+        String resultFromOutputConstructor = "null,null,${NO_ROOTS_EXCEPTION.statusCode},${NO_ROOTS_EXCEPTION.errorMessage}"
+        when(outputConstructor.constructOutput(isNull(), isA(StatusCodes))).thenReturn(resultFromOutputConstructor)
         String input = "1,1,10"
-        assertThat(quadraticSolver.solve(input)).isEqualTo('null,null,4,Calculation failed, quadratic has no real roots')
+        assertThat(quadraticSolver.solve(input)).isEqualTo('null,null,4,Calculation failed because quadratic has no real roots')
     }
 }
